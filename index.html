@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Rockstar's Day | A Cinematic Story</title>
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎸</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+
+    <style>
+        /*
+        ==========================================================================
+        CSS - THE VISUAL SOUL
+        Here, we define the aesthetic. The design is mobile-first, using a
+        minimalist palette and sophisticated typography to create a high-end feel.
+        ==========================================================================
+        */
+
+        /* --- Base & Typography --- */
+        :root {
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Inter', sans-serif;
+            --color-background: #F8F5F2; /* A warm, soft off-white */
+            --color-text: #222222; /* A deep charcoal, softer than pure black */
+            --color-accent: #B89E8A; /* A muted, sophisticated gold/bronze */
+            --timing-fast: 0.5s;
+            --timing-slow: 0.8s;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.7;
+            font-weight: 300;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-serif);
+            font-weight: 700;
+        }
+
+        /* --- Main Layout --- */
+        .story-container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        .story-gallery {
+            width: 100%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        /* --- Header Section --- */
+        .story-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .story-header h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 0.5rem;
+        }
+
+        .story-header p {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            color: var(--color-accent);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+
+        /* --- Image Slider (The Canvas) --- */
+        .image-slider {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            aspect-ratio: 4 / 3; /* A classic photography aspect ratio */
+            background-color: #E0D9D3;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity var(--timing-slow) cubic-bezier(0.4, 0, 0.2, 1);
+            visibility: hidden;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures images fill the container without distortion */
+            object-position: center;
+        }
+
+        /* --- Details Section (The Narrative) --- */
+        .timeline-details {
+            position: relative;
+        }
+
+        .timeline-content {
+            opacity: 0;
+            transition: opacity var(--timing-slow) ease-in-out;
+            visibility: hidden;
+            position: absolute;
+            width: 100%;
+        }
+
+        .timeline-content.active {
+            opacity: 1;
+            visibility: visible;
+            position: relative;
+        }
+
+        .timeline-header {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(184, 158, 138, 0.3);
+            padding-bottom: 1rem;
+        }
+
+        .timeline-number {
+            font-family: var(--font-serif);
+            font-size: 3rem;
+            line-height: 1;
+            color: var(--color-accent);
+        }
+
+        .timeline-title {
+            font-size: 2rem;
+            line-height: 1;
+        }
+
+        .timeline-description {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .detail-item strong {
+            display: block;
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.8rem;
+            font-weight: 400;
+        }
+
+        /* --- Navigation (The Conductor) --- */
+        .navigation-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            user-select: none;
+        }
+
+        .nav-arrows {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-button {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--color-text);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .nav-button:hover {
+            color: var(--color-accent);
+        }
+
+        .nav-dots {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background-color: rgba(184, 158, 138, 0.4);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .dot:hover {
+            background-color: var(--color-accent);
+        }
+
+        .dot.active {
+            background-color: var(--color-text);
+        }
+
+
+        /*
+        ==========================================================================
+        RESPONSIVE DESIGN - The Art of Adaptation
+        Here, we adapt the layout for larger screens (desktops).
+        ==========================================================================
+        */
+        @media (min-width: 900px) {
+            .story-gallery {
+                grid-template-columns: 1.2fr 1fr; /* Create a two-column layout */
+                gap: 4rem;
+                align-items: center;
+            }
+
+            .image-slider {
+                height: 80vh;
+                max-height: 700px;
+                aspect-ratio: unset;
+            }
+
+            .story-container {
+                padding: 4rem 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="story-container">
+
+        <header class="story-header">
+            <h1>A Rockstar's Day</h1>
+            <p>A Cinematic Timeline</p>
+        </header>
+
+        <section class="story-gallery">
+
+            <div class="image-slider">
+                <div class="slide active" data-slide="0">
+                    <img src="images/theme1-morning-after.jpg" alt="The Morning After">
+                </div>
+                <div class="slide" data-slide="1">
+                    <img src="images/theme2-creative-spark.jpg" alt="Creative Spark">
+                </div>
+                <div class="slide" data-slide="2">
+                    <img src="images/theme3-rehearsal.jpg" alt="The Rehearsal">
+                </div>
+                <div class="slide" data-slide="3">
+                    <img src="images/theme4-seductive-setlist.jpg" alt="Seductive Setlist">
+                </div>
+                <div class="slide" data-slide="4">
+                    <img src="images/theme5-midnight-muse.jpg" alt="Midnight Muse">
+                </div>
+                <div class="slide" data-slide="5">
+                    <img src="images/theme6-rockstar-reflection.jpg" alt="Rockstar Reflection">
+                </div>
+                <div class="slide" data-slide="6">
+                    <img src="images/theme7-after-party.jpg" alt="The After-Party">
+                </div>
+            </div>
+
+            <div class="timeline-details">
+                <article class="timeline-content active" data-content="0">
+                    <div class="timeline-header">
+                        <span class="timeline-number">01</span>
+                        <h2 class="timeline-title">The Morning After</h2>
+                    </div>
+                    <p class="timeline-description">
+                        The story begins in sunrise serenity. Wrapped in a white bedsheet, our muse gazes at the waking city, her guitar a silent partner to the night's creativity.
+                    </p>
+                    <div class="details-grid">
+                        <div class="detail-item"><strong>MOOD</strong>Peaceful, Intimate</div>
+                        <div class="detail-item"><strong>WARDROBE</strong>White Bedsheet</div>
+                        <div class="detail-item"><strong>LIGHTING</strong>Soft, Natural Sunrise</div>
+                    </div>
+                </article>
+                <article class="timeline-content" data-content="1">
+                    <div class="timeline-header">
+                        <span class="timeline-number">02</span>
+                        <h2 class="timeline-title">Creative Spark</h2>
+                    </div>
+                    <p class="timeline-description">
+                        Amidst a chaos of sheet music, the artist finds her flow. The floor is her studio, the guitar her voice, as inspiration strikes under the bright midday sun.
+                    </p>
+                    <div class="details-grid">
+                        <div class="detail-item"><strong>MOOD</strong>Focused, Artistic</div>
+                        <div class="detail-item"><strong>WARDROBE</strong>Black Minis & White Top</div>
+                        <div class="detail-item"><strong>LIGHTING</strong>Bright Daylight</div>
+                    </div>
+                </article>
+                <article class="timeline-content" data-content="2">
+                    <div class="timeline-header">
+                        <span class="timeline-number">03</span>
+                        <h2 class="timeline-title">The Rehearsal</h2>
+                    </div>
+                    <p class="timeline-description">
+                        Golden hour brings a shift in energy. Perched on an executive desk, she rehearses with glamorous intensity as the setting sun casts dramatic, cinematic shadows.
+                    </p>
+                    <div class="details-grid">
+                        <div class="detail-item"><strong>MOOD</strong>Powerful, Glamorous</div>
+                        <div class="detail-item"><strong>WARDROBE</strong>Sleek Black Bodysuit</div>
+                        <div class="detail-item"><strong>LIGHTING</strong>Warm, Golden Hour</div>
+                    </div>
+                </article>
+                 <article class="timeline-content" data-content="3">
+                    <div class="timeline-header">
+                        <span class="timeline-number">04</span>
+                        <h2 class="timeline-title">Seductive Setlist</h2>
+                    </div>
+                    <p class="timeline-description">
+                        In the twilight ambiance of a backstage lounge, she crafts her performance. Reclining on velvet, surrounded by roses, the setlist is penned with seductive charm.
+                    </p>
+                    <div class="details-grid">
+                        <div class="detail-item"><strong>MOOD</strong>Luxurious, Moody</div>
+                        <div class="detail-item"><strong>WARDROBE</strong>Black Silk Robe</div>
+                        <div class="detail-item"><strong>LIGHTING</strong>Low-Key, Ambient</div>
+                    </div>
+                </article>
+                <article class="timeline-content" data-content="4">
+                    <div class="timeline-header">
+                        <span class="timeline-number">05</span>
+                        <h2 class="timeline-title">Midnight Muse</h2>
+                    </div>
+                    <p class="timeline-description">
+                        At midnight, passion takes center stage. A single, dramatic spotlight illuminates her on the bed, capturing a moment of raw, intense connection with her music.
+                    </p>
+                    <div class="details-grid">
+                        <div class="detail-item"><strong>MOOD</strong>Intense, Dramatic</div>
+                        <div class="detail-item"><strong>WARDROBE</strong>Black Lace Dress</div>
+                        <div class="detail-item"><strong>LIGHTING</strong>Hard Spotlight</div>
+                    </div>
+                </article>
+                <article class="timeline-content" data-content="5">
+                    <div class="timeline-header">
+                        <span class="timeline-number">06</span>
+                        <h2 class="timeline-title">Rockstar Reflection</h2>
+                    </div>
+                    <p class="timeline-description">
+                        In the quiet of late night, she catches her reflection. A moment of introspection in the bathroom's stark light, the guitar a constant companion to her thoughts.
+                    </p>
+                    <div class="details-grid">
+                        <div class="detail-item"><strong>MOOD</strong>Introspective, Quiet</div>
+                        <div class="detail-item"><strong>WARDROBE</strong>Designer Lingerie</div>
+                        <div class="detail-item"><strong>LIGHTING</strong>Clean, Reflective</div>
+                    </div>
+                </article>
+                 <article class="timeline-content" data-content="6">
+                    <div class="timeline-header">
+                        <span class="timeline-number">07</span>
+                        <h2 class="timeline-title">The After-Party</h2>
+                    </div>
+                    <p class="timeline-description">
+                        The story concludes not with a bang, but with a seductive whisper. Lounging gracefully on the rumpled silk sheets of the bed, she embodies the intimate, decadent aftermath of a legendary night.
+                    </p>
+                    <div class="details-grid">
+                        <div class="detail-item"><strong>MOOD</strong>Sensual, Decadent</div>
+                        <div class="detail-item"><strong>WARDROBE</strong>Anything casual</div>
+                        <div class="detail-item"><strong>LIGHTING</strong>Ambient Room Light</div>
+                    </div>
+                </article>
+
+                <div class="navigation-container">
+                    <div class="nav-dots">
+                        </div>
+                    <div class="nav-arrows">
+                        <button class="nav-button prev-button" aria-label="Previous Slide">&#8592;</button>
+                        <button class="nav-button next-button" aria-label="Next Slide">&#8594;</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+    /*
+    ==========================================================================
+    JAVASCRIPT - THE FLUID MOTION
+    This script orchestrates the gallery. It's kept clean and efficient,
+    handling the logic for changing slides and syncing the text content.
+    ==========================================================================
+    */
+    document.addEventListener('DOMContentLoaded', function() {
+        const slides = document.querySelectorAll('.slide');
+        const contents = document.querySelectorAll('.timeline-content');
+        const nextButton = document.querySelector('.next-button');
+        const prevButton = document.querySelector('.prev-button');
+        const dotsContainer = document.querySelector('.nav-dots');
+
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+
+        // Create navigation dots dynamically
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            dot.dataset.slide = i;
+            if (i === 0) dot.classList.add('active');
+            dotsContainer.appendChild(dot);
+        }
+
+        const dots = document.querySelectorAll('.dot');
+
+        function updateSlide(newIndex) {
+            // Deactivate current slide, content, and dot
+            slides[currentSlide].classList.remove('active');
+            contents[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+
+            // Set the new index
+            currentSlide = newIndex;
+
+            // Activate new slide, content, and dot
+            slides[currentSlide].classList.add('active');
+            contents[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        nextButton.addEventListener('click', () => {
+            const newIndex = (currentSlide + 1) % totalSlides;
+            updateSlide(newIndex);
+        });
+
+        prevButton.addEventListener('click', () => {
+            const newIndex = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateSlide(newIndex);
+        });
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', (e) => {
+                const newIndex = parseInt(e.target.dataset.slide);
+                updateSlide(newIndex);
+            });
+        });
+    });
+    </script>
+
+</body>
+</html>
